@@ -1,0 +1,93 @@
+---
+title: 'Homework 2: Logistic Regression'
+subtitle: 'STAT 340: Applied Regression'
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Nonconstant error variance in the linear-probability model
+
+From your reading, you will note that one of the problems with the linear-probability model is that the equal variance assumption that we need for a linear regression model is violated. Explore this violation in the following exercise:
+
+### Exercise 14.1 (J. Fox, 3rd Edition): Make a table showing the variance of the error $Var(\epsilon)=\pi(1-\pi)$ for the following values of $\pi$: 0.001, 0.01, 0.05, 0.1, 0.3, 0.5, 0.7, 0.9, 0.95, 0.99, 0.999. For what values of $\pi$ is the heteroskedasticity (unequal variance) problem serious?
+
+
+
+## Model Specification
+
+For the rest of this homework assignment, we will continue using the crab species identification data set from the class notes.
+
+```{r echo=FALSE, message=FALSE}
+## Load libraries
+library(MASS)
+library(ggplot2)
+library(dplyr)
+library(caret)
+```
+
+```{r}
+## Sample data set and make reproducible
+set.seed(478)
+crabs <- MASS::crabs[sample.int(nrow(crabs)),]
+crabs <- crabs %>% dplyr::select(-index)
+
+## Add 0/1 response variable
+crabs <- crabs %>%
+  mutate(
+    sp_01 = ifelse(sp == "O", 1, 0)
+  )
+head(crabs)
+
+## Model
+crabs_logit <- glm(sp_01 ~ sex*FL + sex*CL, data=crabs, family=binomial)
+summary(crabs_logit)
+```
+
+
+### Write out the model associated with ... Be sure to include the three components of the GLM, and define any notation (e.g., $\beta$, $X$) that you use.
+
+
+
+### Write down the design matrix associated with the linear component of the GLM from the previous question.
+
+
+
+
+## Check assumptions
+
+### Check the binary response, linearity, and independence assumptions for the model specified in the previous problem (for now we are going to disregard the variance assumption). In particular, make sure to check linearity on the appropriate scale - your explanatory variable of interest should be on the x-axis, and the empirical (calculated from the data) log odds of the response should be on the y-axis. To do this, you will need to make a new data frame with $\log\left(\frac{\pi}{1-\pi_i} \right)$ in one column, and the explanatory variables in the other column. 
+
+```{r}
+
+```
+
+
+### Suppose linearity is not satisfied for a logistic regression model. What would you consider doing to remedy this assumption violation? (Hint, think about what you have done in other models to address departures from linearity. You may give a general answer.)
+
+
+
+
+
+## Hypothesis tests
+
+### Is there evidence that the effect of CL or FL on the odds of being an orange crab differs for male crabs (versus female crabs)? Write out the appropriate hypotheses, and carry out the hypothesis test.
+
+```{r}
+
+```
+
+
+### Compare the model fit (`crabs_logit`) to a model without the interactions with sex using AIC. What model would you favor based on the AIC value? Why?
+
+```{r}
+
+```
+
+
+
+
+
+
